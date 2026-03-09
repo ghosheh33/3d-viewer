@@ -62,7 +62,6 @@ function setLanguage(lang) {
 
     document.getElementById('toggle-lang').textContent = lang === 'ar' ? 'English' : 'عربي';
     document.getElementById('screenshot-btn').textContent = t.screenshot;
-    document.getElementById('panel-title-text').textContent = t.panelTitle;
     document.getElementById('upload-trigger').textContent = t.upload;
     document.getElementById('toggle-rotate').textContent = autoRotate ? t.stopRotate : t.startRotate;
     document.getElementById('label-height').textContent = t.height;
