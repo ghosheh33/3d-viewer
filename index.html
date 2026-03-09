@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>عارض النماذج الثلاثية الأبعاد | 3D Model Viewer</title>
+    <meta name="description" content="تطبيق ويب متقدم لعرض النماذج الثلاثية الأبعاد (3D Models) بصيغ GLB, GLTF, OBJ, FBX مع إضاءة واقعية. Advanced Web 3D Model Viewer.">
+    <meta name="keywords" content="عارض ثلاثي الأبعاد, 3D Viewer, عرض نماذج 3D, GLB Viewer, OBJ Viewer, تطبيق ويب 3D, Three.js">
+    <meta name="author" content="اسمك أو شركتك هنا">
+    <meta name="robots" content="index, follow">
+
+    <meta name="geo.region" content="JO">
+    <meta name="geo.placename" content="Amman">
+    
+    <meta property="og:title" content="عارض النماذج الثلاثية الأبعاد | 3D Viewer">
+    <meta property="og:description" content="قم برفع وعرض نماذجك الثلاثية الأبعاد بسهولة تامة عبر المتصفح. View 3D models effortlessly in your browser.">
+    <meta property="og:type" content="website">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "3D Model Viewer - عارض النماذج الثلاثية الأبعاد",
+      "description": "تطبيق ويب تفاعلي لعرض النماذج الثلاثية الأبعاد. Interactive web application to view 3D models.",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires WebGL",
+      "inLanguage": ["ar", "en"]
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/OBJLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/MTLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/FBXLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/RGBELoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+<h1 class="sr-only">عارض النماذج الثلاثية الأبعاد المتقدم للويب - 3D Web Viewer</h1>
+
+<div id="loading-screen" style="display: none;" aria-live="polite">
+    <div class="spinner"></div>
+    <div id="loading-text" style="font-size: 1.2rem; font-weight: bold;">جاري التحميل... 0%</div>
+</div>
+
+<div id="floating-controls">
+    <button id="toggle-ui" class="glass-btn" aria-label="إخفاء الواجهة">إخفاء الواجهة</button>
+    <button id="toggle-grid" class="glass-btn" aria-label="إخفاء الشبكة">إخفاء الشبكة</button>
+</div>
+
+<header id="top-panel">
+    <button id="toggle-lang" class="btn-icon">English</button>
+    <button class="btn-success" id="screenshot-btn">التقاط صورة</button>
+    <select id="bg-selector" aria-label="تغيير لون الخلفية">
+        <option value="#1a1a1c" selected>الخلفية: داكنة (افتراضي)</option>
+        <option value="#ffffff">الخلفية: بيضاء</option>
+        <option value="#888888">الخلفية: استوديو رمادي</option>
+        <option value="#0f172a">الخلفية: أزرق ليلي</option>
+    </select>
+</header>
+
+<main id="ui-panel">
+    <section>
+        <h3 class="panel-title" id="panel-title-text">إدارة النماذج والتحكم</h3>
+        
+        <div class="controls-row">
+            <select id="model-selector" aria-label="قائمة النماذج الجاهزة">
+                <option value="" disabled selected>اختر نموذجاً جاهزاً...</option>
+                <option value="Models/astronaut_glb.glb">رائد فضاء</option>
+                <option value="Models/Astronaut.glb">رائد فضاء ملون</option>
+                <option value="Models/Mickey.obj">الحج ميكي</option>
+                <option value="Models/car.obj">الحج ميكي</option>
+                <option value="Models/cottage.obj">كوخ</option>
+            </select>
+            <button class="btn-primary" id="upload-trigger">رفع ملف</button>
+            <input type="file" id="file-input" accept=".glb,.gltf,.obj,.fbx" aria-label="رفع ملف">
+            <button class="btn-icon" id="toggle-rotate">إيقاف الدوران</button>
+        </div>
+
+        <div class="sliders-group">
+            <div class="slider-container">
+                <span class="slider-label" id="label-height">ارتفاع المجسم</span>
+                <input type="range" id="y-slider" min="-10" max="10" step="0.1" value="0">
+            </div>
+            <div class="slider-container">
+                <span class="slider-label" id="label-fov">مجال الرؤية (FOV)</span>
+                <input type="range" id="fov-slider" min="10" max="100" step="1" value="45">
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>
